@@ -1,3 +1,5 @@
+package module1;
+
 public interface idls {
     void addBook();
     void searchBookTitle();

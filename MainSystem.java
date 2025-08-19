@@ -1,3 +1,7 @@
+import module2.Main;
+import module1.dlsFunction;
+import module1.idls;
+
 import java.util.Scanner;
 
 public class MainSystem {

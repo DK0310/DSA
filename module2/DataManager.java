@@ -1,3 +1,5 @@
+package module2;
+
 public interface DataManager {
     void addData(String code, String name, int value1, int value2);
     void displayAllData();

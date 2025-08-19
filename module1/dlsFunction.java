@@ -1,3 +1,5 @@
+package module1;
+
 import java.util.Scanner;
 
 public class dlsFunction implements idls {

@@ -1,4 +1,4 @@
-
+package module2;
 public interface ModuleMenu {
     String getModuleName();
     void initialize();
