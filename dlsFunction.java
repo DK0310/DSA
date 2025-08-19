@@ -119,7 +119,7 @@ public class dlsFunction implements idls {
             return;
         }
 
-        available[id] += 1; // trả = đưa 1 bản về kho
+        available[id] += 1;
         System.out.println("Returned. Thank you!");
         printRow(id);
     }

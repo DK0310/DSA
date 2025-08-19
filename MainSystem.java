@@ -1,0 +1,90 @@
+import java.util.Scanner;
+
+public class MainSystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        boolean running = true;
+
+        idls dlsService = new dlsFunction();  // Module 1: DLS
+        Main module2 = new Main();            // Module 2: Course Registration Assistant
+
+        while (running) {
+            System.out.println("=== MAIN MENU ===");
+            System.out.println("0. Exit");
+            System.out.println("1. Digital Library System");
+            System.out.println("2. " + module2.getModuleName());
+            System.out.println("3. Module 3 (placeholder)");
+            System.out.println("4. Module 4 (placeholder)");
+            System.out.println("5. Module 5 (placeholder)");
+            System.out.print("Select an option: ");
+
+            String raw = sc.nextLine().trim();
+            int choice;
+            try { choice = Integer.parseInt(raw); }
+            catch (NumberFormatException e) { System.out.println("Please enter a valid number.\n"); continue; }
+
+            switch (choice) {
+                case 0:
+                    running = false;
+                    System.out.println("Goodbye!");
+                    break;
+
+                case 1: { // === MODULE 1: DLS ===
+                    boolean inDLS = true;
+                    while (inDLS) {
+                        System.out.println("=== Digital Library System ===");
+                        System.out.println("0. Back to Main Menu");
+                        System.out.println("1. Add new book");
+                        System.out.println("2. Search book by title");
+                        System.out.println("3. Search book by author");
+                        System.out.println("4. Borrow book");
+                        System.out.println("5. Return book");
+                        System.out.println("6. Display all books");
+                        System.out.println("7. Delete book");
+                        System.out.print("Select an option: ");
+
+                        String sel = sc.nextLine().trim();
+                        int c;
+                        try { c = Integer.parseInt(sel); }
+                        catch (NumberFormatException e) { System.out.println("Please enter a valid number.\n"); continue; }
+
+                        switch (c) {
+                            case 0: inDLS = false; break;
+                            case 1: dlsService.addBook(); break;
+                            case 2: dlsService.searchBookTitle(); break;
+                            case 3: dlsService.searchBookAuthor(); break;
+                            case 4: dlsService.borrowBook(); break;
+                            case 5: dlsService.returnBook(); break;
+                            case 6: dlsService.displayBook(); break;
+                            case 7: dlsService.deleteBook(); break;
+                            default: System.out.println("Please enter a valid choice");
+                        }
+                        System.out.println();
+                    }
+                    break;
+                }
+
+                case 2: {
+
+                    module2.run();
+                    break;
+                }
+
+                case 3:
+                    System.out.println("[Module 3] Hook here.\n");
+                    break;
+
+                case 4:
+                    System.out.println("[Module 4] Hook here.\n");
+                    break;
+
+                case 5:
+                    System.out.println("[Module 5] Hook here.\n");
+                    break;
+
+                default:
+                    System.out.println("Please enter a valid choice\n");
+            }
+        }
+    }
+}
