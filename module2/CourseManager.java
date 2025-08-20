@@ -66,20 +66,18 @@ public class CourseManager {
                     Course course = courses[j];
                     if (course.getCourseCode().equalsIgnoreCase(courseCode.trim())) {
                         if (course.getEnrolled() < course.getCapacity()) {
-                            Course[] regCourses = student.getRegisteredCourses();
-                            for (Course regCourse : regCourses) {
-                                if (regCourse != null && regCourse.getCourseCode().equalsIgnoreCase(courseCode.trim())) {
+                            // Kiểm tra trùng môn
+                            for (Course regCourse : student.getRegisteredCourses()) {
+                                if (regCourse.getCourseCode().equalsIgnoreCase(courseCode.trim())) {
                                     return false;
                                 }
                             }
-                            for (int k = 0; k < regCourses.length; k++) {
-                                if (regCourses[k] == null) {
-                                    regCourses[k] = course;
-                                    course.enroll();
-                                    return true;
-                                }
+                            if (student.addCourse(course)) {
+                                course.enroll();
+                                return true;
+                            } else {
+                                return false;
                             }
-                            return false;
                         } else {
                             return false;
                         }
@@ -151,4 +149,3 @@ public class CourseManager {
         return studentCount;
     }
 }
-

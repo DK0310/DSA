@@ -1,6 +1,7 @@
 import module2.Main;
 import module1.dlsFunction;
 import module1.idls;
+import module3.LostAndFoundTracker;
 
 import java.util.Scanner;
 
@@ -11,13 +12,14 @@ public class MainSystem {
 
         idls dlsService = new dlsFunction();  // Module 1: DLS
         Main module2 = new Main();            // Module 2: Course Registration Assistant
+        LostAndFoundTracker module3 = new LostAndFoundTracker();
 
         while (running) {
             System.out.println("=== MAIN MENU ===");
             System.out.println("0. Exit");
             System.out.println("1. Digital Library System");
             System.out.println("2. " + module2.getModuleName());
-            System.out.println("3. Module 3 (placeholder)");
+            System.out.println("3. LostAndFoundTracker");
             System.out.println("4. Module 4 (placeholder)");
             System.out.println("5. Module 5 (placeholder)");
             System.out.print("Select an option: ");
@@ -74,9 +76,52 @@ public class MainSystem {
                     break;
                 }
 
-                case 3:
-                    System.out.println("[Module 3] Hook here.\n");
+                case 3: {
+                    boolean inLF = true;
+                    while (inLF) {
+                        System.out.println("=== Lost & Found Tracker ===");
+                        System.out.println("0. Back to Main Menu");
+                        System.out.println("1. Add Item");
+                        System.out.println("2. View Items");
+                        System.out.println("3. Search Item");
+                        System.out.println("4. Claim Item");
+                        System.out.print("Select an option: ");
+
+                        String sel = sc.nextLine().trim();
+                        int c;
+                        try { c = Integer.parseInt(sel); }
+                        catch (NumberFormatException e) { System.out.println("Please enter a valid number.\n"); continue; }
+
+                        switch (c) {
+                            case 0: inLF = false; break;
+                            case 1:
+                                System.out.print("Enter description: ");
+                                String desc = sc.nextLine();
+                                System.out.print("Enter date: ");
+                                String date = sc.nextLine();
+                                module3.addItem(desc, date);
+                                break;
+                            case 2:
+                                module3.displayItems();
+                                break;
+                            case 3:
+                                System.out.print("Enter keyword: ");
+                                String keyword = sc.nextLine();
+                                module3.searchItem(keyword);
+                                break;
+                            case 4:
+                                System.out.print("Enter description to claim: ");
+                                String claim = sc.nextLine();
+                                module3.claimItem(claim);
+                                break;
+                            default:
+                                System.out.println("Please enter a valid choice");
+                        }
+                        System.out.println();
+                    }
                     break;
+                }
+
 
                 case 4:
                     System.out.println("[Module 4] Hook here.\n");

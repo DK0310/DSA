@@ -1,5 +1,4 @@
 package module2;
-
 public class Course {
     private String courseCode;
     private String courseName;

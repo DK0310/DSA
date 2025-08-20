@@ -1,11 +1,9 @@
 package module2;
 
+
 import java.util.Scanner;
 
-
-
 public class Main {
-    // Use Course and Student classes from their own files
     private CourseManager courseManager;
     private final Scanner scanner;
 
@@ -325,3 +323,5 @@ public class Main {
         }
     }
 }
+
+
