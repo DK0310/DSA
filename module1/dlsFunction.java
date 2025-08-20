@@ -1,17 +1,28 @@
 package module1;
 
 import java.util.Scanner;
+import java.util.Stack;
 
 public class dlsFunction implements idls {
     Scanner scanner = new Scanner(System.in);
 
     public static int MAX = 1000;
-    String[] titles   = new String[MAX];
-    String[] authors  = new String[MAX];
-    int[] total    = new int[MAX];
-    int[] available= new int[MAX];
-    boolean[] active   = new boolean[MAX];
+    String[]  titles    = new String[MAX];
+    String[]  authors   = new String[MAX];
+    int[]     total     = new int[MAX];
+    int[]     available = new int[MAX];
+    boolean[] active    = new boolean[MAX];
     int size = 0;
+
+    private Stack<Integer>[] copies;
+
+    @SuppressWarnings("unchecked")
+    public dlsFunction() {
+        copies = new Stack[MAX];
+        for (int i = 0; i < MAX; i++) {
+            copies[i] = new Stack<>();
+        }
+    }
 
 
     String readLine(String prompt) {
@@ -55,16 +66,23 @@ public class dlsFunction implements idls {
             System.out.println("Storage is full. Cannot add more books.");
             return;
         }
+
         String title  = readLine("Title: ");
         String author = readLine("Author: ");
         int c = readInt("Number of copies (>=1): ");
         if (c < 1) c = 1;
 
-        titles[slot]    = title;
-        authors[slot]   = author;
-        total[slot]     = c;
-        available[slot] = c;
-        active[slot]    = true;
+        titles[slot]  = title;
+        authors[slot] = author;
+        total[slot]   = c;
+        active[slot]  = true;
+
+
+        copies[slot].clear();
+        for (int k = 1; k <= c; k++) {
+            copies[slot].push(k);
+        }
+        available[slot] = copies[slot].size();
 
         if (slot == size) size++;
         System.out.println("Added with ID: " + slot);
@@ -101,13 +119,14 @@ public class dlsFunction implements idls {
         int id = readInt("Enter book ID to borrow: ");
         if (!exists(id)) { System.out.println("Invalid ID."); return; }
 
-        if (available[id] <= 0) {
+        if (copies[id].isEmpty()) {
             System.out.println("Book unavailable.");
             return;
         }
 
-        available[id] -= 1;
-        System.out.println("Borrowed successfully.");
+        int copy = copies[id].pop();
+        available[id] = copies[id].size();
+        System.out.println("Borrowed successfully. Copy #" + copy);
         printRow(id);
     }
 
@@ -116,13 +135,16 @@ public class dlsFunction implements idls {
         int id = readInt("Enter book ID to return: ");
         if (!exists(id)) { System.out.println("Invalid ID."); return; }
 
-        if (available[id] >= total[id]) {
-            System.out.println("No outstanding borrowed copy to return.");
+
+        if (copies[id].size() >= total[id]) {
+            System.out.println("All copies are already returned.");
             return;
         }
 
-        available[id] += 1;
-        System.out.println("Returned. Thank you!");
+        int newCopyId = copies[id].size() + 1;
+        copies[id].push(newCopyId);
+        available[id] = copies[id].size();
+        System.out.println("Returned successfully. Copy #" + newCopyId);
         printRow(id);
     }
 
@@ -154,6 +176,7 @@ public class dlsFunction implements idls {
         authors[id]   = null;
         total[id]     = 0;
         available[id] = 0;
+        copies[id].clear();
 
         if (id == size - 1) shrinkTail();
         System.out.println("Deleted book ID: " + id);
