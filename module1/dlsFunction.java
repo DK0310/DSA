@@ -1,10 +1,10 @@
 package module1;
 
 import java.util.Scanner;
-import java.util.Stack;
 
 public class dlsFunction implements idls {
     Scanner scanner = new Scanner(System.in);
+
 
     public static int MAX = 1000;
     String[]  titles    = new String[MAX];
@@ -14,16 +14,15 @@ public class dlsFunction implements idls {
     boolean[] active    = new boolean[MAX];
     int size = 0;
 
-    private Stack<Integer>[] copies;
 
-    @SuppressWarnings("unchecked")
+    private ManuStack[] copies;
+
     public dlsFunction() {
-        copies = new Stack[MAX];
+        copies = new ManuStack[MAX];
         for (int i = 0; i < MAX; i++) {
-            copies[i] = new Stack<>();
+            copies[i] = new ManuStack(MAX);
         }
     }
-
 
     String readLine(String prompt) {
         System.out.print(prompt);
@@ -76,7 +75,6 @@ public class dlsFunction implements idls {
         authors[slot] = author;
         total[slot]   = c;
         active[slot]  = true;
-
 
         copies[slot].clear();
         for (int k = 1; k <= c; k++) {
@@ -180,5 +178,48 @@ public class dlsFunction implements idls {
 
         if (id == size - 1) shrinkTail();
         System.out.println("Deleted book ID: " + id);
+    }
+}
+
+
+class ManuStack {
+    private int[] data;
+    private int top;
+
+    public ManuStack(int capacity) {
+        if (capacity < 1) capacity = 1;
+        data = new int[capacity];
+        top = -1;
+    }
+
+    public boolean isEmpty() {
+        return top == -1;
+    }
+
+    public boolean isFull() {
+        return top == data.length - 1;
+    }
+
+    public void push(int x) {
+        if (isFull()) throw new RuntimeException("Stack overflow");
+        data[++top] = x;
+    }
+
+    public int pop() {
+        if (isEmpty()) throw new RuntimeException("Stack underflow");
+        return data[top--];
+    }
+
+    public int peek() {
+        if (isEmpty()) throw new RuntimeException("Stack is empty");
+        return data[top];
+    }
+
+    public int size() {
+        return top + 1;
+    }
+
+    public void clear() {
+        top = -1;
     }
 }
