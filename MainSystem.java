@@ -2,6 +2,7 @@ import module2.Main;
 import module1.dlsFunction;
 import module1.idls;
 import module3.LostAndFoundTracker;
+import module4.CampusCalendar;
 
 import java.util.Scanner;
 
@@ -10,9 +11,10 @@ public class MainSystem {
         Scanner sc = new Scanner(System.in);
         boolean running = true;
 
-        idls dlsService = new dlsFunction();  // Module 1: DLS
+        idls dlsService = new dlsFunction();  // Module 1: Digital Library System
         Main module2 = new Main();            // Module 2: Course Registration Assistant
-        LostAndFoundTracker module3 = new LostAndFoundTracker();
+        LostAndFoundTracker module3 = new LostAndFoundTracker(); // Module 3: Lost And Found Tracker
+        CampusCalendar module4 = new CampusCalendar(); // Module 4: Campus Event Calendar
 
         while (running) {
             System.out.println("=== MAIN MENU ===");
@@ -20,14 +22,18 @@ public class MainSystem {
             System.out.println("1. Digital Library System");
             System.out.println("2. " + module2.getModuleName());
             System.out.println("3. LostAndFoundTracker");
-            System.out.println("4. Module 4 (placeholder)");
+            System.out.println("4. Campus Event Calendar");
             System.out.println("5. Module 5 (placeholder)");
             System.out.print("Select an option: ");
 
             String raw = sc.nextLine().trim();
             int choice;
-            try { choice = Integer.parseInt(raw); }
-            catch (NumberFormatException e) { System.out.println("Please enter a valid number.\n"); continue; }
+            try {
+                choice = Integer.parseInt(raw);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.\n");
+                continue;
+            }
 
             switch (choice) {
                 case 0:
@@ -51,19 +57,40 @@ public class MainSystem {
 
                         String sel = sc.nextLine().trim();
                         int c;
-                        try { c = Integer.parseInt(sel); }
-                        catch (NumberFormatException e) { System.out.println("Please enter a valid number.\n"); continue; }
+                        try {
+                            c = Integer.parseInt(sel);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number.\n");
+                            continue;
+                        }
 
                         switch (c) {
-                            case 0: inDLS = false; break;
-                            case 1: dlsService.addBook(); break;
-                            case 2: dlsService.searchBookTitle(); break;
-                            case 3: dlsService.searchBookAuthor(); break;
-                            case 4: dlsService.borrowBook(); break;
-                            case 5: dlsService.returnBook(); break;
-                            case 6: dlsService.displayBook(); break;
-                            case 7: dlsService.deleteBook(); break;
-                            default: System.out.println("Please enter a valid choice");
+                            case 0:
+                                inDLS = false;
+                                break;
+                            case 1:
+                                dlsService.addBook();
+                                break;
+                            case 2:
+                                dlsService.searchBookTitle();
+                                break;
+                            case 3:
+                                dlsService.searchBookAuthor();
+                                break;
+                            case 4:
+                                dlsService.borrowBook();
+                                break;
+                            case 5:
+                                dlsService.returnBook();
+                                break;
+                            case 6:
+                                dlsService.displayBook();
+                                break;
+                            case 7:
+                                dlsService.deleteBook();
+                                break;
+                            default:
+                                System.out.println("Please enter a valid choice");
                         }
                         System.out.println();
                     }
@@ -89,11 +116,17 @@ public class MainSystem {
 
                         String sel = sc.nextLine().trim();
                         int c;
-                        try { c = Integer.parseInt(sel); }
-                        catch (NumberFormatException e) { System.out.println("Please enter a valid number.\n"); continue; }
+                        try {
+                            c = Integer.parseInt(sel);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number.\n");
+                            continue;
+                        }
 
                         switch (c) {
-                            case 0: inLF = false; break;
+                            case 0:
+                                inLF = false;
+                                break;
                             case 1:
                                 System.out.print("Enter description: ");
                                 String desc = sc.nextLine();
@@ -123,17 +156,54 @@ public class MainSystem {
                 }
 
 
-                case 4:
-                    System.out.println("[Module 4] Hook here.\n");
+                case 4: {
+                    boolean inCC = true;
+                    while (inCC) {
+                        System.out.println("\n=== Campus Event Calendar ===");
+                        System.out.println("0. Back to Main Menu");
+                        System.out.println("1. Add Event");
+                        System.out.println("2. View All Events");
+                        System.out.println("3. Search Events by Date");
+                        System.out.print("Choose: ");
+
+                        String sel = sc.nextLine().trim();
+                        int c;
+                        try {
+                            c = Integer.parseInt(sel);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number.\n");
+                            continue;
+                        }
+
+                        switch (c) {
+                            case 0:
+                                inCC = false;
+                                break;
+                            case 1:
+                                module4.addEvent();
+                                break;
+                            case 2:
+                                module4.viewEvents();
+                                break;
+                            case 3:
+                                module4.searchEvents();
+                                break;
+                            default:
+                                System.out.println("Please enter a valid choice\n");
+                        }
+                    }
                     break;
+                }
+
 
                 case 5:
                     System.out.println("[Module 5] Hook here.\n");
                     break;
 
-                default:
-                    System.out.println("Please enter a valid choice\n");
+                    default:
+                        System.out.println("Please enter a valid choice\n");
             }
         }
     }
 }
+
