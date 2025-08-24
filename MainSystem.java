@@ -3,7 +3,10 @@ import module1.dlsFunction;
 import module1.idls;
 import module3.LostAndFoundTracker;
 import module4.CampusCalendar;
+import module5.Hotel;
+import module5.Room;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class MainSystem {
@@ -15,6 +18,8 @@ public class MainSystem {
         Main module2 = new Main();            // Module 2: Course Registration Assistant
         LostAndFoundTracker module3 = new LostAndFoundTracker(); // Module 3: Lost And Found Tracker
         CampusCalendar module4 = new CampusCalendar(); // Module 4: Campus Event Calendar
+        Hotel hotel = new Hotel(); // Module 5: Room Booking System
+
 
         while (running) {
             System.out.println("=== MAIN MENU ===");
@@ -23,7 +28,7 @@ public class MainSystem {
             System.out.println("2. " + module2.getModuleName());
             System.out.println("3. LostAndFoundTracker");
             System.out.println("4. Campus Event Calendar");
-            System.out.println("5. Module 5 (placeholder)");
+            System.out.println("5. Room Booking System");
             System.out.print("Select an option: ");
 
             String raw = sc.nextLine().trim();
@@ -194,14 +199,103 @@ public class MainSystem {
                     }
                     break;
                 }
+                case 5: {
+                    hotel.addRoom(new Room("101", "Standard Single", 80.0));
+                    hotel.addRoom(new Room("102", "Standard Double", 120.0));
+                    hotel.addRoom(new Room("201", "Deluxe Suite", 250.0));
 
+                    boolean inHotel = true;
+                    while (inHotel) {
+                        System.out.println("\n===== HOTEL MANAGEMENT SYSTEM =====");
+                        System.out.println("1. Check-In Guest");
+                        System.out.println("2. Check-Out Guest");
+                        System.out.println("3. Find Available Rooms");
+                        System.out.println("4. View All Rooms");
+                        System.out.println("5. View All Bookings");
+                        System.out.println("6. Add a New Room");
+                        System.out.println("7. Exit");
+                        System.out.print("Enter your choice: ");
 
-                case 5:
-                    System.out.println("[Module 5] Hook here.\n");
+                        String sel = sc.nextLine().trim();
+                        int c;
+                        try {
+                            c = Integer.parseInt(sel);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number.\n");
+                            continue;
+                        }
+
+                        switch (c) {
+                            case 1: { // Check-In Guest
+                                System.out.print("Room Number: ");
+                                String roomNo = sc.nextLine();
+                                System.out.print("Guest Name: ");
+                                String guestName = sc.nextLine();
+                                System.out.print("Check-out Date (YYYY-MM-DD): ");
+                                String coRaw = sc.nextLine();
+
+                                try {
+                                    LocalDate checkOut = LocalDate.parse(coRaw);
+                                    hotel.checkIn(roomNo, guestName, checkOut);
+                                } catch (Exception ex) {
+                                    System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                                }
+                                break;
+                            }
+
+                            case 2: {
+                                System.out.print("Room Number: ");
+                                String roomNo = sc.nextLine();
+                                hotel.checkOut(roomNo);
+                                break;
+                            }
+
+                            case 3: {
+                                hotel.findAvailableRooms();
+                                break;
+                            }
+
+                            case 4: {
+                                hotel.displayAllRooms();
+                                break;
+                            }
+
+                            case 5: {
+                                hotel.viewBookings();
+                                break;
+                            }
+
+                            case 6: {
+                                System.out.print("Room Number: ");
+                                String roomNo = sc.nextLine();
+                                System.out.print("Room Type: ");
+                                String type = sc.nextLine();
+                                System.out.print("Price per Night: ");
+                                String priceRaw = sc.nextLine();
+                                try {
+                                    double price = Double.parseDouble(priceRaw);
+                                    Room room = new Room(roomNo, type, price);
+                                    hotel.addRoom(room);
+                                } catch (NumberFormatException ex) {
+                                    System.out.println("Invalid price. Please enter a number.");
+                                }
+                                break;
+                            }
+
+                            case 7:
+                                inHotel = false;
+                                break;
+
+                            default:
+                                System.out.println("Please enter a valid choice\n");
+                        }
+                        System.out.println();
+                    }
                     break;
+                }
 
-                    default:
-                        System.out.println("Please enter a valid choice\n");
+
+
             }
         }
     }
